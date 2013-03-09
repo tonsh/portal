@@ -3,6 +3,7 @@
 
 import tornado.web
 import tornado.ioloop
+import models
 from settings import STATIC_DIR
 from handlers.home_handler import HomeHandler
 from handlers.admin_handler import AdminHandler
@@ -21,6 +22,7 @@ application = tornado.web.Application([
 
 
 if __name__ == '__main__':
+    models.create_db()
     tornado.locale.load_gettext_translations('./locale', 'lang')
 
     application.listen(8080)
