@@ -4,4 +4,4 @@ __pycache__*
 tmp/*
 settings.py
 *~
-demo/*
+assets/js/treeview/demo/*
