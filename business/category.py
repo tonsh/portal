@@ -1,17 +1,18 @@
 #coding=utf=8
 ''' category business '''
 
-from libs import _
-from base import Base
+import datetime
+from libs.utils import _
+from business.base import Base
 from models import Category as CategoryMod
-from models.from_error import FormError
-from models.from_error import ForbiddenError
+from libs.errors import FormError
+from libs.errors import ForbiddenError
 
 class Category(Base):
     ''' category business '''
 
     def __init__(self):
-        super(Base, self).__init__()
+        super(Category, self).__init__()
 
     def get_one_by_id(self, cid):
         cid = int(cid)
@@ -65,19 +66,20 @@ class Category(Base):
             raise ForbiddenError(_('非法访问'))
         return cid
 
-    def get_children(self, cid):
+    def get_children(self, cid=0):
         ''' 获取一个节点下的子节点 '''
         cid = int(cid)
-        return self.session.query(CategoryMod).find(parent=cid)
+        return self.session.query(CategoryMod).filter_by(parent=cid)
 
-    def reget_children(self, cid):
+    def reget_children(self, cid=0):
         ''' 递归获取一个节点下的子节点 '''
         tree = dict({})
 
         children = self.get_children(cid)
-        if not children:
-            return None
-        for child in children:
-            tree[child.id] = self.get_children(child.id)
-
+        if children:
+            for child in children:
+                tree[child.id] = {
+                    'info': child,
+                    'children':self.reget_children(child.id),
+                }
         return tree
