@@ -5,6 +5,7 @@ import tornado.web
 import tornado.ioloop
 import models
 from settings import STATIC_DIR
+from settings import LOCALE_DIR
 from handlers.home_handler import HomeHandler
 from handlers.admin_handler import AdminHandler
 
@@ -23,7 +24,7 @@ application = tornado.web.Application([
 
 if __name__ == '__main__':
     models.create_db()
-    tornado.locale.load_gettext_translations('./locale', 'lang')
+    tornado.locale.load_gettext_translations(LOCALE_DIR, 'lang')
 
     application.listen(8080)
     tornado.ioloop.IOLoop.instance().start()
