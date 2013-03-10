@@ -1,0 +1,19 @@
+<%inherit file="../base.html" />
+
+<%def name="body_content()">
+    <p>${_('分类管理')}</p>
+
+    <form method="post" action="/admin/category/add">
+        ${xsrf_form_html()}
+        ${_('分类标题')}*
+        <input type="text" name="title" />
+        ${_('选择父节点')}
+        <select name="parent">
+            <option value="0">${_('根节点')}</option>
+            %for category in categories:
+                <option value="${category.id}">${category.title}</option>
+            %endfor
+        </select>
+        <input type="submit" value="${_('添加分类')}" />
+    </form>
+</%def>

@@ -7,7 +7,7 @@ import models
 from settings import STATIC_DIR
 from settings import LOCALE_DIR
 from handlers.home_handler import HomeHandler
-from handlers.admin_handler import AdminHandler
+from handlers.admin.urls import _urls as admin_urls
 
 settings = {
     'static_path': STATIC_DIR,
@@ -18,8 +18,7 @@ settings = {
 
 application = tornado.web.Application([
     (r'/', HomeHandler),
-    (r'/admin', AdminHandler),
-], **settings)
+] + admin_urls, **settings)
 
 
 if __name__ == '__main__':
