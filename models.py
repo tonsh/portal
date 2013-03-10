@@ -20,11 +20,11 @@ class Category(Base):
     id = Column(Integer, primary_key=True)
     title = Column(String(255), nullable=False)
     parent = Column(Integer, nullable=False, default=0)
-    create_at = Column(DateTime, nullable=False) 
+    created_at = Column(DateTime, nullable=False) 
 
-    images = relationship('Image',
-                order_by="Image.id",
-                backref='category')
+    #images = relationship('Image',
+    #            order_by="Image.id",
+    #            backref='category')
 
     def __repr__(self):
         return "<Category('%s')>" % (self.title)
@@ -38,7 +38,7 @@ class Image(Base):
     title = Column(String(255), nullable=True)
     content = Column(Text, nullable=True)
     cid = Column(Integer, ForeignKey('categories.id'), nullable=False)
-    create_at = Column(DateTime, nullable=False)
+    created_at = Column(DateTime, nullable=False)
 
     category = relationship("Category",
                             backref=backref('images', order_by=id))
