@@ -10,10 +10,22 @@
         ${_('选择父节点')}
         <select name="parent">
             <option value="0">${_('根节点')}</option>
-            %for category in categories:
-                <option value="${category.id}">${category.title}</option>
-            %endfor
+            ${reshow_category(categories)}
         </select>
         <input type="submit" value="${_('添加分类')}" />
     </form>
+</%def>
+
+<%def name="reshow_category(categories, depth=0)">
+    %for cid, category in categories.items():
+        <%
+            info = category['info']
+            children = category.get('children', None)
+            blank = '&nbsp;&nbsp;&nbsp;&nbsp;' * depth
+        %>
+        <option value="${info.id}">${blank} ${info.title}</option>
+        %if children:
+            ${reshow_category(children, depth+1)}
+        %endif
+    %endfor
 </%def>

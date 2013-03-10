@@ -26,7 +26,7 @@ class AddHandler(BaseHandler):
     ''' 添加分类 '''
     def get(self):
         params = {
-            'categories': Category().get_children(),
+            'categories': Category().reget_children(),
         }
         self.render("admin/category/add.html", **params)
 
