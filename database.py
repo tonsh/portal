@@ -11,7 +11,7 @@ class Database(object):
 
     def __init__(self):
         self.engine = create_engine(
-            "mysql+pymysql://%s:%s@%s/%s" % (
+            "mysql+pymysql://%s:%s@%s/%s?charset=utf8" % (
                 MYSQL_MAP['user'],
                 MYSQL_MAP['pwd'],
                 MYSQL_MAP['host'],
