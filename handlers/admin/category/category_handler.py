@@ -15,12 +15,10 @@ class IndexHandler(BaseHandler):
         }
         self.render("admin/category/index.html", **params)
 
-class ListHandler(BaseHandler):
-    def get(self):
-        params = {
-            'categories': Category().reget_children(),
-        }
-        self.return_json(params)
+class DeleteHandler(BaseHandler):
+    def get(self, cid):
+        Category().delete(cid)
+        self.return_json({'success': True})
 
 class AddHandler(BaseHandler):
     ''' 添加分类 '''

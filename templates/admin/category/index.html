@@ -6,12 +6,24 @@
 
     <script type="text/javascript">
      $(function() {
-         $("#category_tree").treeview({
+         $("#category-tree").treeview({
              collapsed:  true,
              animated:   "medium",
-             control:    "#control_tree",
+             control:    "#control-tree",
              persist:    "location",
          });
+
+        $("ul#category-tree .delete-category").on('click', function() {
+            delobj = $(this)
+            cid = delobj.attr("data-cid")
+            $.ajax({
+                type:   "get",
+                url:    "/admin/category/delete/"+cid,
+                success:function(data) {
+                    delobj.parent("li").remove();
+                },
+            });
+        });
      });
     </script>
 </%def>
@@ -22,12 +34,12 @@
         <a href="/admin/category/add">${_('添加分类')}</a>
     </p>
 
-    <div id="control_tree">
+    <div id="control-tree">
         <a href="#?">${_('收起')}</a>
         <a href="#?">${_('展开')}</a>
     </div>
 
-    <ul id="category_tree">
+    <ul id="category-tree">
         ${reshow_category(categories)}
     </ul>
 </%def>
@@ -40,6 +52,7 @@
         %>
         <li>
             <a href="#${info.id}">${info.title}</a>
+            <a class="delete-category" data-cid="${info.id}" href="javascript:void(0)">X</a>
             %if children:
                 <ul>
                     ${reshow_category(children)}
