@@ -5,13 +5,17 @@
      $(function() {
         $("#category_form").submit(function(){
             $.ajax({
-                type:       'post',
-                url:        $(this).attr('aciton'),
+                type:       $(this).attr('method'),
+                url:        $(this).attr('action'),
                 data:       $(this).serialize(),
                 success:    function(data) {
-                    $.each(data, function(key, msg) {
-                        $("#"+key+"-msg").html(msg)
-                    });
+                    if(('success' in data) && data.success){
+                        location.href = "/admin/category"
+                    } else {
+                        $.each(data, function(key, msg) {
+                            $("#"+key+"-msg").html(msg)
+                        });
+                    }
                     return false;
                 },
             });
