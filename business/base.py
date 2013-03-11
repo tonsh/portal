@@ -20,5 +20,4 @@ class Base(object):
         self.session.commit()
 
     def _delete(self, mod_obj):
-        self.session.delete(mod_obj)
-        self.session.flush()
+        self.session.commit()

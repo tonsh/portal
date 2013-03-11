@@ -38,8 +38,8 @@ class Category(Base):
 
     def delete(self, cid):
         cid = int(cid)
-        obj = self.session.query(CategoryMod).filter_by(id=cid)
-        self._delete(obj)
+        self.session.query(CategoryMod).filter_by(id=cid).delete()
+        self._delete(int(cid))
 
     def validate(self, category):
         ''' 数据验证 '''
