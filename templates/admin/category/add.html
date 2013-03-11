@@ -1,17 +1,40 @@
 <%inherit file="../base.html" />
 
+<%def name="header_content()">
+<script type="text/javascript">
+     $(function() {
+        $("#category_form").submit(function(){
+            $.ajax({
+                type:       'post',
+                url:        $(this).attr('aciton'),
+                data:       $(this).serialize(),
+                success:    function(data) {
+                    $.each(data, function(key, msg) {
+                        $("#"+key+"-msg").html(msg)
+                    });
+                    return false;
+                },
+            });
+            return false;
+        });
+     });
+</script>
+</%def>
+
 <%def name="body_content()">
     <p>${_('分类管理')}</p>
 
-    <form method="post" action="/admin/category/add">
+    <form method="post" action="/admin/category/add" id="category_form">
         ${xsrf_form_html()}
         ${_('分类标题')}*
         <input type="text" name="title" />
+        <span id="title-msg"></span>
         ${_('选择父节点')}
         <select name="parent">
             <option value="0">${_('根节点')}</option>
             ${reshow_category(categories)}
         </select>
+        <span id="parent-msg"></span>
         <input type="submit" value="${_('添加分类')}" />
     </form>
 </%def>
