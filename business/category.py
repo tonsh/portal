@@ -21,7 +21,7 @@ class Category(Base):
     def insert(self, category):
         category = self.validate(category)
         if self.error_dict:
-            raise FormException(self.error_dict)
+            raise FormError(self.error_dict)
 
         category['created_at'] = datetime.datetime.now()
         obj = CategoryMod(**category)
@@ -31,7 +31,7 @@ class Category(Base):
         cid = int(cid)
         category = self.validate(category)
         if self.error_dict:
-            raise FormException(self.error_dict)
+            raise FormError(self.error_dict)
 
         obj = self.session.query(CategoryMod).filter_by(id=cid)
         self._update(obj, category)
