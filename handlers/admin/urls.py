@@ -1,8 +1,9 @@
 #coding=utf-8
 
-from handlers.admin_handler import AdminHandler
-from handlers.admin.category.urls import _urls as cat_urls
+from handlers.admin.admin_handler import IndexHandler
+from handlers.admin.category.urls import _urls as category_urls
+from handlers.admin.image.urls import _urls as image_urls
 
 _urls = [
-    (r'/admin', AdminHandler),
-] + cat_urls
+    (r'/admin', IndexHandler),
+] + category_urls + image_urls
