@@ -32,7 +32,6 @@ class AddHandler(BaseHandler):
         try:
             args = self.request_args()
             category = Category().insert(args)
-            #self.redirect("/admin/category")
             self.return_json({"success": True})
         except FormError as error:
             self.return_json(error.msg)

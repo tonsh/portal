@@ -1,0 +1,56 @@
+<%inherit file="../base.html" />
+
+<%def name="header_content()">
+    <link rel="stylesheet" href="${static_url('js/treeview/jquery.treeview.css')}" />
+
+    <script type="text/javascript">
+     $(function() {
+        $("ul#category-tree .delete-category").on('click', function() {
+            delobj = $(this)
+            cid = delobj.attr("data-cid")
+            $.ajax({
+                type:   "get",
+                url:    "/admin/category/delete/"+cid,
+                success:function(data) {
+                    delobj.parent("li").remove();
+                },
+            });
+        });
+     });
+    </script>
+</%def>
+
+<%def name="body_content()">
+    <p>
+        ${_('图片管理')}
+        <a href="/admin/category/add">${_('添加分类')}</a>
+        <a href="/admin/image/add">${_('添加图片')}</a>
+    </p>
+
+    <div id="control-tree">
+        <a href="#?">${_('收起')}</a>
+        <a href="#?">${_('展开')}</a>
+    </div>
+
+    <ul id="category-tree">
+        ${reshow_category(categories)}
+    </ul>
+</%def>
+
+<%def name="reshow_category(categories)">
+    %for cid, category in categories.items():
+        <%
+            info = category['info']
+            children = category.get('children', None)
+        %>
+        <li>
+            <a href="#${info.id}">${info.title}</a>
+            <a class="delete-category" data-cid="${info.id}" href="javascript:void(0)">X</a>
+            %if children:
+                <ul>
+                    ${reshow_category(children)}
+                </ul>
+            %endif
+        </li>
+    %endfor
+</%def>

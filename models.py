@@ -38,6 +38,9 @@ class Image(Base):
     title = Column(String(255), nullable=True)
     content = Column(Text, nullable=True)
     cid = Column(Integer, ForeignKey('categories.id'), nullable=False)
+    is_topped = Column(Boolean, default=False, nullable=False)
+    src_img = Column(String(255), nullable=False)
+    thumb_img = Column(String(255), nullable=False)
     created_at = Column(DateTime, nullable=False)
 
     category = relationship("Category",

@@ -1,0 +1,74 @@
+<%inherit file="../base.html" />
+
+<%def name="header_content()">
+    <script type="text/javascript">
+     $(function() {
+        $("#image_form").submit(function(){
+            var formData;
+
+            formData = new FormData();
+            formData.append('file', $('input[name=image]'), this).get(0).files[0]
+            $.ajax({
+                type:       $(this).attr('method'),
+                url:        $(this).attr('action'),
+                contentType: 'multipart/form-data',
+                //data:       $(this).serialize(),
+                data:       formData,
+                success:    function(data) {
+                    if(('success' in data) && data.success){
+                        location.href = "/admin/image"
+                    } else {
+                        $.each(data, function(key, msg) {
+                            $("#"+key+"-msg").html(msg)
+                        });
+                    }
+                    return false;
+                },
+            });
+            return false;
+        });
+     });
+    </script>
+</%def>
+
+<%def name="body_content()">
+    <p>
+        ${_('图片管理')}
+    </p>
+    <form method="post" action="/admin/image/add" id="image_form" enctype="multipart/form-data">
+        ${xsrf_form_html()}
+        ${_('上传图片')}*
+        <input type="file" name="image" />
+        <span id="image-msg"></span>
+        ${_('图片标题')}
+        <input type="text" name="title" />
+        <span id="title-msg"></span>
+        ${_('选择分类')}
+        <select name="cid">
+            ${reshow_category(categories)}
+        </select>
+        <span id="cid-msg"></span>
+        ${_('图片内容')}
+        <textarea name="content"></textarea>
+        <span id="cotent-msg"></span>
+        ${_('是否推荐')}
+        <input type="checkbox" name="is_topped" />
+        <input type="submit" value="${_('添加图片')}" />
+    </form>
+
+    <div id="image-show"></div>
+</%def>
+
+<%def name="reshow_category(categories, depth=0)">
+    %for cid, category in categories.items():
+        <%
+            info = category['info']
+            children = category.get('children', None)
+            blank = '&nbsp;&nbsp;&nbsp;&nbsp;' * depth
+        %>
+        <option value="${info.id}">${blank} ${info.title}</option>
+        %if children:
+            ${reshow_category(children, depth+1)}
+        %endif
+    %endfor
+</%def>
